@@ -1,1 +1,341 @@
+<!DOCTYPE html>
+<html lang="en">
 
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Dashboard</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="brand">
+        Expense Intelligence
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="dashboard-container">
+
+
+<div class="dashboard-heading">
+
+    <span class="tag">
+        ANALYTICS
+    </span>
+
+    <h1>
+        Expense Dashboard
+    </h1>
+
+    <p class="muted">
+        Analyze your spending and expense risk.
+    </p>
+
+</div>
+
+
+<section class="stats-grid">
+
+
+<div class="stat-card">
+
+    <span>
+        Total Spending
+    </span>
+
+    <h2>
+        ₹{{ "%.2f"|format(total) }}
+    </h2>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span>
+        Average Expense
+    </span>
+
+    <h2>
+        ₹{{ "%.2f"|format(average) }}
+    </h2>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span>
+        Highest Expense
+    </span>
+
+    <h2>
+        ₹{{ "%.2f"|format(highest) }}
+    </h2>
+
+</div>
+
+
+<div class="stat-card">
+
+    <span>
+        High Risk Expenses
+    </span>
+
+    <h2>
+        {{ high_risk_count }}
+    </h2>
+
+</div>
+
+
+</section>
+
+
+<section class="dashboard-card">
+
+    <h2>
+        Category Analysis
+    </h2>
+
+
+    {% if category_summary %}
+
+    <div class="analysis-list">
+
+        {% for category, amount in category_summary.items() %}
+
+        <div class="analysis-row">
+
+            <span>
+                {{ category }}
+            </span>
+
+            <strong>
+                ₹{{ "%.2f"|format(amount) }}
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <p class="muted">
+        No category data available.
+    </p>
+
+    {% endif %}
+
+</section>
+
+
+<section class="dashboard-card">
+
+    <h2>
+        Monthly Spending
+    </h2>
+
+
+    {% if monthly_summary %}
+
+    <div class="analysis-list">
+
+        {% for month, amount in monthly_summary.items() %}
+
+        <div class="analysis-row">
+
+            <span>
+                {{ month }}
+            </span>
+
+            <strong>
+                ₹{{ "%.2f"|format(amount) }}
+            </strong>
+
+        </div>
+
+        {% endfor %}
+
+    </div>
+
+    {% else %}
+
+    <p class="muted">
+        No monthly data available.
+    </p>
+
+    {% endif %}
+
+</section>
+
+
+<section class="dashboard-card">
+
+    <div class="table-heading">
+
+        <h2>
+            Expense History
+        </h2>
+
+        <a href="{{ url_for('home') }}"
+           class="small-btn">
+            + Add Expense
+        </a>
+
+    </div>
+
+
+    {% if expenses %}
+
+    <div class="table-wrapper">
+
+        <table>
+
+            <thead>
+
+                <tr>
+
+                    <th>Date</th>
+
+                    <th>Expense</th>
+
+                    <th>Category</th>
+
+                    <th>Amount</th>
+
+                    <th>Risk</th>
+
+                    <th>Action</th>
+
+                </tr>
+
+            </thead>
+
+
+            <tbody>
+
+            {% for expense in expenses %}
+
+            <tr>
+
+                <td>
+                    {{ expense.date }}
+                </td>
+
+                <td>
+                    {{ expense.item }}
+                </td>
+
+                <td>
+
+                    <span class="category-badge">
+                        {{ expense.category }}
+                    </span>
+
+                </td>
+
+                <td>
+                    ₹{{ "%.2f"|format(expense.amount) }}
+                </td>
+
+                <td>
+
+                    <span class="category-badge">
+                        {{ expense.risk_level }}
+                    </span>
+
+                </td>
+
+                <td>
+
+                    <form
+                        class="delete-form"
+                        action="{{ url_for(
+                            'delete_expense',
+                            index=loop.index0
+                        ) }}"
+                        method="POST"
+                    >
+
+                        <button
+                            type="submit"
+                            class="delete-btn"
+                        >
+                            Delete
+                        </button>
+
+                    </form>
+
+                </td>
+
+            </tr>
+
+            {% endfor %}
+
+            </tbody>
+
+        </table>
+
+    </div>
+
+
+    {% else %}
+
+    <div class="empty-state">
+
+        <h3>
+            No expenses yet
+        </h3>
+
+        <p>
+            Add your first expense to start analyzing.
+        </p>
+
+        <a href="{{ url_for('home') }}"
+           class="primary-btn">
+            Add Expense
+        </a>
+
+    </div>
+
+    {% endif %}
+
+
+</section>
+
+
+</main>
+
+
+<script src="{{ url_for('static', filename='js/script.js') }}">
+</script>
+
+</body>
+</html>
