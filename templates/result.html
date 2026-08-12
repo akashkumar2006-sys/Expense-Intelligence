@@ -1,1 +1,163 @@
 
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+
+    <meta charset="UTF-8">
+
+    <meta name="viewport"
+          content="width=device-width, initial-scale=1.0">
+
+    <title>Expense Analysis</title>
+
+    <link rel="stylesheet"
+          href="{{ url_for('static', filename='css/style.css') }}">
+
+</head>
+
+<body>
+
+<header class="navbar">
+
+    <div class="brand">
+        Expense Intelligence
+    </div>
+
+    <nav>
+
+        <a href="{{ url_for('home') }}">
+            Home
+        </a>
+
+        <a href="{{ url_for('dashboard') }}">
+            Dashboard
+        </a>
+
+    </nav>
+
+</header>
+
+
+<main class="result-container">
+
+<section class="result-card">
+
+
+{% if success %}
+
+
+<div class="success-icon">
+    ✓
+</div>
+
+
+<h1>
+    Expense Analyzed
+</h1>
+
+<p class="muted">
+    Your expense has been recorded and analyzed.
+</p>
+
+
+<div class="expense-summary">
+
+    <div>
+        <span>Expense</span>
+        <strong>
+            {{ expense.item }}
+        </strong>
+    </div>
+
+
+    <div>
+        <span>Amount</span>
+        <strong>
+            ₹{{ "%.2f"|format(expense.amount) }}
+        </strong>
+    </div>
+
+
+    <div>
+        <span>Category</span>
+        <strong>
+            {{ expense.category }}
+        </strong>
+    </div>
+
+
+    <div>
+        <span>Payment Method</span>
+        <strong>
+            {{ expense.payment_method }}
+        </strong>
+    </div>
+
+</div>
+
+
+<div class="analysis-result">
+
+    <span>
+        Risk Level
+    </span>
+
+    <h2>
+        {{ risk_level }}
+    </h2>
+
+
+    <span>
+        Risk Probability
+    </span>
+
+    <h2>
+        {{ "%.2f"|format(risk_probability) }}%
+    </h2>
+
+</div>
+
+
+{% else %}
+
+
+<div class="error-icon">
+    !
+</div>
+
+
+<h1>
+    Analysis Failed
+</h1>
+
+
+<p class="error-message">
+    {{ message }}
+</p>
+
+
+{% endif %}
+
+
+<div class="result-buttons">
+
+    <a href="{{ url_for('home') }}"
+       class="primary-btn">
+        Add Another
+    </a>
+
+    <a href="{{ url_for('dashboard') }}"
+       class="secondary-btn">
+        View Dashboard
+    </a>
+
+</div>
+
+
+</section>
+
+</main>
+
+</body>
+</html>
