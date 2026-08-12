@@ -1,1 +1,31 @@
+# Python
+__pycache__/
+*.py[cod]
 
+# Virtual environment
+venv/
+env/
+
+# Pydroid / local files
+.pydroid/
+
+# Trained ML models
+models/*.pkl
+
+# User-generated expense data
+data/user_expenses.csv
+
+# Uploaded/generated files
+uploads/
+predictions/
+
+# Environment variables
+.env
+
+# IDE / editor
+.vscode/
+.idea/
+
+# OS files
+.DS_Store
+Thumbs.db
